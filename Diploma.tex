@@ -1,0 +1,174 @@
+\documentclass[a4paper,14pt]{extreport}
+%Римская богиня Фортуна в эпоху Республики и начала Империи.
+%The Roman goddess Fortuna in the period of the Republic and the Early Empire.
+\usepackage[14pt]{extsizes} % Задаём размер шрифта 14 пунктов
+\usepackage{pscyr} % Подключаем хорошие русские шрифты
+\renewcommand{\rmdefault}{ftm} % Устанавливаем шрифт по умолчанию Times New Roman
+% Подключаем поддержку языков. NB! русский должен идти последним - это будет язык по умолчанию.
+\usepackage[greek,latin,english,french,german,italian,russian]{babel}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{cmap}
+
+% Подключаем поддержку диакритики для древнегреческого шрифта
+\languageattribute{greek}{polutoniko}
+
+% Греческие шрифты
+% grmn is an excellent greek font!
+% gsmi, gsmo - тоже несколько неплохо, без засечек, похожий на шрифт для печатной машинки
+\newfont{\thegreek}{grmo1400} 	% Это шрифт для основного текста
+\newfont{\thegreekfn}{grmo1000}	% Это шрифт для сносок
+\newcommand\graeca[1]{\foreignlanguage{greek}{\thegreek{#1}}}			% Это команда греческого языка для основного текста
+\newcommand\graecafn[1]{\foreignlanguage{greek}{\thegreekfn{#1}}}		% Это команда греческого языка для сносок
+
+
+\renewcommand{\baselinestretch}{1.5} % Полуторный интерлиньяж
+\frenchspacing
+\righthyphenmin=2 % Минимальное число символов при переносе - 2.
+\usepackage{indentfirst} % Включить отступ у первого абзаца
+\parindent=1.27cm % Задаём величину абзацного отступа
+
+
+% Формат заголовков
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+% Настраиваем формат отображения глав в оглавлении - чтобы перед номером главы было напечатано слово "Глава"
+\titlecontents{chapter}% <section-type>
+  [0pt]% <left>
+  {\addvspace{.7pc}}% <above-code>
+  {\bfseries\chaptername\ \thecontentslabel\quad}% <numbered-entry-format>
+  {\bfseries}% <numberless-entry-format>
+  {\bfseries\hfill\contentspage}% <filler-page-format>
+
+
+% Задаём формат заголовков для главы, секции и подсекции в тексте
+\titleformat{\chapter}[block]{\bfseries\Large\raggedright}
+        {\chaptertitlename{}~\arabic{chapter}.}{1ex}{}
+\titleformat{\section}[block]{\bfseries\large\raggedright}
+        {\arabic{chapter}.\arabic{section}.}{1ex}{}
+\titleformat{\subsection}[block]{\bfseries\normalsize\raggedright}
+        {\arabic{chapter}.\arabic{section}.\arabic{subsection}.}{1ex}{}
+
+% Подключаем поддержку приложений к тексту
+\usepackage[title]{appendix}
+\renewcommand\appendixname{Приложение}
+
+% Сноски в тексте:
+% По умолчанию в LaTeX сноски нумеруются отдельно для каждой главы - нам это не нужно
+% Делаем сквозную нумерацию сносок по всему документу
+\usepackage{remreset} % Подключаем нужный для этого пакет...
+\makeatletter
+  \@removefromreset{footnote}{chapter} % И убираем подчинённость счётчика сносок от счётчика глав! 
+\makeatother
+
+
+\tolerance=3000
+\clubpenalty=10000
+\widowpenalty=10000
+
+% Указываем поля страницы
+\usepackage{geometry}  % Меняем поля страницы
+\geometry{left=3cm}    % левое поле
+\geometry{right=1.5cm} % правое поле
+\geometry{top=2cm}     % верхнее поле
+\geometry{bottom=2cm}  % нижнее поле
+
+\usepackage{epigraph}  % В начале работы вкрячу пафосный эпиграф
+
+% Подключаем biblatex!
+\usepackage[style=gost-inline,bibstyle=gost-footnote,
+%defernumbers=true,
+language=auto,babel=other,backend=biber, clearlang=true,ibidtracker=strict,opcittracker=strict,citepages=suppress,useprefix=true,sorting=nyt]{biblatex}
+
+% Подключаем базы данных с библиографией
+\addbibresource{biblio/diploma.bib}
+\addbibresource{biblio/fontes.bib}
+
+% Это заголовок для секции библиографического указателя ("Список источников" и "Список литературы")
+\defbibheading{mysubbibintoc}[\bibname]{%
+\section*{#1}
+\phantomsection % Эта команда нужна для того, чтобы в оглавлении pdf-документа была правильно поставлена гиперссылка
+\addcontentsline{toc}{section}{#1} % Добавляем строку в оглавление
+}
+
+% Заголовок для подсекции библиографического указателя ("Публикации таких-то источников")
+% Этот заголовок в моей работе не попадает в оглавление, поэтому нет соотв. команд
+\defbibheading{subsubbibliography}[\bibname]{%
+\subsection*{#1}
+}
+
+
+% Графика
+\usepackage[pdftex]{graphicx}
+\graphicspath{{images/}}
+\usepackage[section]{placeins}	% Это чтобы плавающие иллюстрации не вылезали за пределы секций
+
+
+% Гиперссылки. NB! Пакет должен подключаться последним!
+\usepackage[colorlinks,pdfencoding=unicode,unicode=true]{hyperref}  
+\hypersetup{bookmarksnumbered, colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=blue, pdftitle={Фортуна в Древнем Риме}, pdfauthor={Victor Zhuravlev}, pdfsubject={Roman History}, pdfkeywords={Rome, Religion, Fortuna}}
+\usepackage{bookmark}
+
+% А эта вся пежня нужна, чтобы hyperref правильно работал с appendix!
+% http://tex.stackexchange.com/questions/41649/how-to-make-appendix-and-hyperref-packages-work-together-with-cyrillic-non-asci
+
+\renewcommand{\appendixtocname}{Приложения}
+\renewcommand{\appendixpagename}{Приложения}
+\renewcommand{\appendixname}{Приложние}
+\makeatletter
+\let\oriAlph\Alph
+\let\orialph\alph
+\renewcommand{\@resets@pp}{\par
+  \@ppsavesec
+  \stepcounter{@pps}
+  \setcounter{section}{0}%
+  \if@chapter@pp
+    \setcounter{chapter}{0}%
+    \renewcommand\@chapapp{\appendixname}%
+    \renewcommand\thechapter{\@Alph\c@chapter}%
+  \else
+    \setcounter{subsection}{0}%
+    \renewcommand\thesection{\@Alph\c@section}%
+  \fi
+  \if@pphyper
+    \if@chapter@pp
+      \renewcommand{\theHchapter}{\theH@pps.\oriAlph{chapter}}%
+    \else
+      \renewcommand{\theHsection}{\theH@pps.\oriAlph{section}}%
+    \fi
+    \def\Hy@chapapp{appendix}%
+  \fi
+  \restoreapp
+}
+\makeatother
+
+
+\begin{document}
+
+\input{TitlePage.tex}
+
+\setcounter{page}{1}
+
+\tableofcontents
+
+\input{001_Praefatio.tex} % Введение
+
+\input{002_FontiumInquisitio.tex}			% Обзор источников
+
+\input{003_Historiographia_new.tex}		% Историография
+
+\input{010_Cultus.tex} % 1 глава - обзор культа
+
+\input{020_Imago.tex} % 2 глава - античные представления о Фортуне
+
+\input{030_Analysis.tex} % 3 глава - анализ Фортуны
+
+\input{008_Conclusio.tex} % Заключение
+
+\input{060_Bibliographia.tex} % Источники и библиография
+
+\input{appendices.tex} % Приложения
+
+\end{document}
+
